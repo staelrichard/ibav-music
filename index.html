@@ -261,12 +261,8 @@
       sugestao: "https://script.google.com/macros/s/AKfycbzMkzQdeCOhNbLnlM2-DQjdQx-erQ3safYzzCQ0HJJam0Wf5gXOvg2xhG204nTn_ifRDw/exec?pagina=sugerir"
     };
 
-    function abrirSistema(tipo) {
-      document.getElementById("inicio").style.display = "none";
-      document.getElementById("rodape").style.display = "none";
-      document.getElementById("telaSistema").style.display = "block";
-
-      document.getElementById("sistema").src = ENDERECOS[tipo];
+  function abrirSistema(tipo) {
+  window.location.href = ENDERECOS[tipo];
     }
 
     function voltarInicio() {
