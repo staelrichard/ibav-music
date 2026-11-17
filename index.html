@@ -261,9 +261,9 @@
       sugestao: "https://script.google.com/macros/s/AKfycbzMkzQdeCOhNbLnlM2-DQjdQx-erQ3safYzzCQ0HJJam0Wf5gXOvg2xhG204nTn_ifRDw/exec?pagina=sugerir"
     };
 
-  function abrirSistema(tipo) {
-  window.location.href = ENDERECOS[tipo];
-    }
+function abrirSistema(tipo) {
+  window.open(ENDERECOS[tipo], "_blank");
+}
 
     function voltarInicio() {
       document.getElementById("sistema").src = "about:blank";
