@@ -1,0 +1,20 @@
+
+{
+  "name": "IBAV Music",
+  "short_name": "IBAV Music",
+  "description": "Ministério de Louvor da Igreja Batista Ação e Vida",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#080D25",
+  "theme_color": "#080D25",
+  "icons": [
+    {
+      "src": "logo-ibav-music.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
