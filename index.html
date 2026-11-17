@@ -10,7 +10,9 @@
   <title>IBAV MUSIC</title>
 
   <link rel="icon" type="image/png" href="logo-ibav-music.png">
-
+  
+<link rel="manifest" href="manifest.json">
+  
   <style>
     * {
       box-sizing: border-box;
@@ -273,6 +275,14 @@ function abrirSistema(tipo) {
       document.getElementById("rodape").style.display = "block";
     }
   </script>
-
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .then(() => console.log("IBAV Music PWA registrado!"))
+      .catch((erro) => console.error("Erro ao registrar PWA:", erro));
+  });
+}
+</script>
 </body>
 </html>
