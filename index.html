@@ -54,6 +54,10 @@
       .botao { padding: 11px 7px; font-size: 12px; }
       .icone { font-size: 26px; }
     }
+    .ibav-modal[hidden]{display:none!important}.ibav-modal{position:fixed;inset:0;z-index:1000;background:rgba(3,7,18,.92);display:grid;place-items:center;padding:18px}
+    .ibav-dialog{width:min(430px,100%);background:#151b35;border:1px solid #6c4ce4;border-radius:16px;padding:25px;color:white}
+    .ibav-dialog button.fechar{float:right;background:transparent;color:white;border:0;font-size:24px;cursor:pointer}
+    #ibav-login-status{font-size:13px;color:#fbbfcb;min-height:18px;margin-top:14px}
   </style>
 </head>
 <body>
@@ -119,11 +123,51 @@
         <div class="icone" aria-hidden="true">⚙️</div>
         <h2>Administração</h2>
         <p>Gerencie o ministério com as permissões necessárias.</p>
-        <a class="botao" href="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec?pagina=administracao" target="_blank" rel="noopener noreferrer" aria-label="Abrir Administração na aplicação correspondente">Abrir Administração</a>
+        <button class="botao" type="button" id="ibav-abrir-admin">Entrar na Administração</button>
       </article>
     </section>
   </main>
   <p style="max-width:1050px;margin:0 auto;padding:0 20px;color:#cbd5e1;font-size:12px;text-align:center">Cada área da Gestão abre sua seção correspondente após a autenticação. As permissões são verificadas no servidor. As permissões são verificadas dentro dos sistemas.</p>
+  <section class="ibav-modal" id="ibav-admin-modal" hidden aria-label="Login administrativo" role="dialog" aria-modal="true">
+    <div class="ibav-dialog"><button class="fechar" id="ibav-fechar-admin" type="button" aria-label="Fechar">×</button>
+      <h2>Administração IBAV Music</h2><p>Entre com uma conta Google administrativa autorizada.</p>
+      <div id="ibav-google-github"></div><p id="ibav-login-status" role="status"></p>
+    </div>
+  </section>
+  <form id="ibav-admin-post" action="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec" method="POST" hidden>
+    <input type="hidden" name="ibav_acao" value="login_google">
+    <input type="hidden" name="id_token" id="ibav-admin-credential">
+  </form>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
+  (() => {
+    // ID público do cliente OAuth: copiar exatamente do Google Cloud (não é client secret).
+    const CLIENT_ID = '528977577860-je6gvj943en213pujp9sop8hva2uvjmc.apps.googleusercontent.com';
+    const modal=document.getElementById('ibav-admin-modal');
+    const status=document.getElementById('ibav-login-status');
+    const button=document.getElementById('ibav-google-github');
+    let iniciado=false;
+    document.getElementById('ibav-abrir-admin').addEventListener('click',()=>{modal.hidden=false; iniciar();});
+    document.getElementById('ibav-fechar-admin').addEventListener('click',()=>{modal.hidden=true;});
+    modal.addEventListener('click',e=>{if(e.target===modal)modal.hidden=true;});
+    function iniciar(){
+      if(iniciado)return;
+      if(!/^\d+-[A-Za-z0-9_-]+\.apps\.googleusercontent\.com$/.test(CLIENT_ID)){status.textContent='Configure o ID do cliente OAuth no arquivo index.html do GitHub.';return;}
+      if(!window.google?.accounts?.id){status.textContent='Aguardando Google...';setTimeout(iniciar,300);return;}
+      try{
+        google.accounts.id.initialize({client_id:CLIENT_ID,callback:res=>{
+          if(!res?.credential){status.textContent='Não foi possível obter a credencial Google.';return;}
+          status.textContent='Verificando sua conta na Gestão...';
+          document.getElementById('ibav-admin-credential').value=res.credential;
+          document.getElementById('ibav-admin-post').submit();
+          document.getElementById('ibav-admin-credential').value='';
+        }});
+        google.accounts.id.renderButton(button,{theme:'outline',size:'large',text:'signin_with',width:300});
+        status.textContent=''; iniciado=true;
+      }catch(e){status.textContent='Erro ao iniciar Google: '+e.message;}
+    }
+  })();
+  </script>
   <footer>IBAV MUSIC — Igreja Batista Ação e Vida</footer>
   <script>
     if ('serviceWorker' in navigator) {
