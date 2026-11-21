@@ -1,288 +1,138 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080D25">
-  <meta name="description" content="IBAV MUSIC - Ministério de Louvor da Igreja Batista Ação e Vida">
-
+  <meta name="description" content="IBAV MUSIC — Central de Avaliação, Sugestões de Músicas e Gestão do Ministério de Louvor da Igreja Batista Ação e Vida">
   <title>IBAV MUSIC</title>
-
   <link rel="icon" type="image/png" href="logo-ibav-music.png">
-  
-<link rel="manifest" href="manifest.json">
-  
+  <link rel="manifest" href="manifest.json">
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
+      margin: 0; min-height: 100vh; font-family: Arial, Helvetica, sans-serif;
       color: white;
-      background:
-        linear-gradient(rgba(5,10,30,.82), rgba(5,10,30,.94)),
+      background: linear-gradient(rgba(5,10,30,.82), rgba(5,10,30,.94)),
         url("fundo-ibav-music.png") center/cover fixed;
     }
-
-    header {
-      padding: 20px;
-      background: rgba(5,10,30,.75);
-      border-bottom: 1px solid rgba(255,255,255,.12);
-    }
-
-    .topo {
-      max-width: 900px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .logo {
-      width: 52px;
-      height: 52px;
-      border-radius: 12px;
-      object-fit: cover;
-    }
-
-    .marca {
-      font-size: 22px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
-    .subtitulo {
-      color: #c7d2fe;
-      font-size: 12px;
-      margin-top: 4px;
-    }
-
-    main {
-      max-width: 900px;
-      margin: auto;
-      padding: 55px 20px;
-    }
-
-    .intro {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-
-    h1 {
-      font-size: 29px;
-    }
-
-    .descricao {
-      color: #cbd5e1;
-      line-height: 1.6;
-    }
-
-    .opcoes {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-
+    header { padding: 20px; background: rgba(5,10,30,.75); border-bottom: 1px solid rgba(255,255,255,.12); }
+    .topo { max-width: 1050px; margin: auto; display: flex; align-items: center; gap: 14px; }
+    .logo { width: 52px; height: 52px; border-radius: 12px; object-fit: cover; }
+    .marca { font-size: 22px; font-weight: bold; letter-spacing: 1px; }
+    .subtitulo { color: #c7d2fe; font-size: 12px; margin-top: 4px; }
+    main { max-width: 1050px; margin: auto; padding: 55px 20px; }
+    .intro { text-align: center; margin-bottom: 35px; }
+    h1 { font-size: 29px; }
+    .descricao { color: #cbd5e1; line-height: 1.6; }
+    .opcoes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
     .card {
-      padding: 28px;
-      min-height: 260px;
-      border-radius: 17px;
-      background: rgba(15,23,42,.88);
-      border: 1px solid rgba(255,255,255,.14);
-      display: flex;
-      flex-direction: column;
+      padding: 24px; min-height: 215px; border-radius: 17px;
+      background: rgba(15,23,42,.88); border: 1px solid rgba(255,255,255,.14);
+      display: flex; flex-direction: column;
     }
-
-    .icone {
-      font-size: 38px;
+    .icone { font-size: 32px; }
+    h2 { font-size: 21px; }
+    .card p { color: #cbd5e1; line-height: 1.6; font-size: 14px; flex-grow: 1; }
+    .botao {
+      display: block; width: 100%; padding: 15px; border: 0; border-radius: 9px;
+      background: #4f46e5; color: white; font-size: 15px; font-weight: bold;
+      cursor: pointer; text-align: center; text-decoration: none;
     }
+    .botao:hover, .botao:focus-visible { background: #6366f1; }
+    .secundario { background: rgba(99,102,241,.22); border: 1px solid rgba(165,180,252,.4); }
+    .secundario:hover, .secundario:focus-visible { background: rgba(99,102,241,.4); }
+    footer { text-align: center; padding: 25px; color: #94a3b8; font-size: 12px; }
 
-    h2 {
-      font-size: 21px;
-    }
-
-    .card p {
-      color: #cbd5e1;
-      line-height: 1.6;
-      font-size: 14px;
-      flex-grow: 1;
-    }
-
-    button {
-      width: 100%;
-      padding: 15px;
-      border: 0;
-      border-radius: 9px;
-      background: #4f46e5;
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #6366f1;
-    }
-
-    .secundario {
-      background: rgba(99,102,241,.22);
-      border: 1px solid rgba(165,180,252,.4);
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #94a3b8;
-      font-size: 12px;
-    }
-
-    #telaSistema {
-      display: none;
-      height: calc(100vh - 90px);
-      background: #080D25;
-    }
-
-    .barra {
-      height: 45px;
-      padding: 7px 12px;
-      background: #111936;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .voltar {
-      width: auto;
-      padding: 8px 16px;
-      font-size: 13px;
-    }
-
-    #sistema {
-      width: 100%;
-      height: calc(100% - 45px);
-      border: 0;
-      background: white;
-    }
-
-    @media(max-width: 650px) {
-      .opcoes {
-        grid-template-columns: 1fr;
-      }
-
-      main {
-        padding: 35px 16px;
-      }
-
-      h1 {
-        font-size: 25px;
-      }
-
-      #telaSistema {
-        height: calc(100dvh - 90px);
-      }
+    @media (max-width: 650px) {
+      .opcoes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      main { padding: 35px 16px; }
+      h1 { font-size: 25px; }
+      .card { min-height: 190px; padding: 15px; }
+      .card h2 { font-size: 16px; }
+      .card p { font-size: 12px; }
+      .botao { padding: 11px 7px; font-size: 12px; }
+      .icone { font-size: 26px; }
     }
   </style>
 </head>
-
 <body>
-
   <header>
     <div class="topo">
-      <img class="logo" src="logo-ibav-music.png" alt="IBAV Music">
+      <img class="logo" src="logo-ibav-music.png" alt="Logotipo IBAV Music">
       <div>
         <div class="marca">IBAV MUSIC</div>
         <div class="subtitulo">Ministério de Louvor — IBAV</div>
       </div>
     </div>
   </header>
-
   <main id="inicio">
-
     <section class="intro">
-      <h1>Bem-vindo à IBAV Music</h1>
-      <p class="descricao">
-        Um espaço para participar da construção do repertório
-        musical da nossa igreja.
-      </p>
+      <h1>Bem-vindo ao IBAV Music</h1>
+      <p class="descricao">Um só lugar para acessar as ferramentas do Ministério de Louvor da nossa igreja.</p>
     </section>
-
-    <section class="opcoes">
-
+    <section class="opcoes" aria-label="Áreas do IBAV Music">
       <article class="card">
-        <div class="icone">🎧</div>
+        <div class="icone" aria-hidden="true">🎧</div>
         <h2>Central de Avaliação</h2>
-        <p>
-          Área exclusiva dos líderes do Ministério de Louvor.
-          Confira e avalie as músicas sugeridas.
-        </p>
-        <button onclick="abrirSistema('central')">
-          Acessar Central
-        </button>
+        <p>Avalie as músicas sugeridas para o ministério.</p>
+        <a class="botao" href="https://script.google.com/macros/s/AKfycbytpeVA8nUIY2vsMT9oOweG8kFghZUIFbIdvwialilL93cWPmK5HKMv_vzRpyzPW8Lcow/exec" target="_blank" rel="noopener noreferrer" aria-label="Acessar Central na aplicação correspondente">Acessar Central</a>
       </article>
-
       <article class="card">
-        <div class="icone">🎤</div>
-        <h2>Sugerir uma música</h2>
-        <p>
-          Envie músicas que poderiam fazer parte
-          do repertório da nossa igreja.
-        </p>
-        <button class="secundario"
-          onclick="abrirSistema('sugestao')">
-          Enviar sugestão
-        </button>
+        <div class="icone" aria-hidden="true">📅</div>
+        <h2>Escalas</h2>
+        <p>Consulte as escalas e a programação dos cultos.</p>
+        <a class="botao" href="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec" target="_blank" rel="noopener noreferrer" aria-label="Abrir Escalas na aplicação correspondente">Abrir Escalas</a>
       </article>
-
+      <article class="card">
+        <div class="icone" aria-hidden="true">🎼</div>
+        <h2>Repertório</h2>
+        <p>Consulte o repertório e envie novas sugestões.</p>
+        <a class="botao" href="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec" target="_blank" rel="noopener noreferrer" aria-label="Abrir Repertório na aplicação correspondente">Abrir Repertório</a>
+        <a class="botao secundario" style="margin-top:9px" href="https://script.google.com/macros/s/AKfycbzMkzQdeCOhNbLnlM2-DQjdQx-erQ3safYzzCQ0HJJam0Wf5gXOvg2xhG204nTn_ifRDw/exec?pagina=sugerir" target="_blank" rel="noopener noreferrer">Sugerir música</a>
+      </article>
+      <article class="card">
+        <div class="icone" aria-hidden="true">🎶</div>
+        <h2>Setlists</h2>
+        <p>Acesse as sequências de músicas dos cultos.</p>
+        <a class="botao" href="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec" target="_blank" rel="noopener noreferrer" aria-label="Abrir Setlists na aplicação correspondente">Abrir Setlists</a>
+      </article>
+      <article class="card">
+        <div class="icone" aria-hidden="true">✅</div>
+        <h2>Participações</h2>
+        <p>Confirme sua participação e informe indisponibilidades.</p>
+        <a class="botao" href="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec" target="_blank" rel="noopener noreferrer" aria-label="Abrir Participações na aplicação correspondente">Abrir Participações</a>
+      </article>
+      <article class="card">
+        <div class="icone" aria-hidden="true">🔄</div>
+        <h2>Trocas</h2>
+        <p>Solicite e acompanhe substituições.</p>
+        <a class="botao" href="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec" target="_blank" rel="noopener noreferrer" aria-label="Abrir Trocas na aplicação correspondente">Abrir Trocas</a>
+      </article>
+      <article class="card">
+        <div class="icone" aria-hidden="true">👥</div>
+        <h2>Membros</h2>
+        <p>Acesse informações do ministério conforme seu perfil.</p>
+        <a class="botao" href="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec" target="_blank" rel="noopener noreferrer" aria-label="Abrir Membros na aplicação correspondente">Abrir Membros</a>
+      </article>
+      <article class="card">
+        <div class="icone" aria-hidden="true">⚙️</div>
+        <h2>Administração</h2>
+        <p>Gerencie o ministério com as permissões necessárias.</p>
+        <a class="botao" href="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec" target="_blank" rel="noopener noreferrer" aria-label="Abrir Administração na aplicação correspondente">Abrir Administração</a>
+      </article>
     </section>
-
   </main>
-
-  <section id="telaSistema">
-    <div class="barra">
-      <button class="voltar" onclick="voltarInicio()">
-        ← Voltar
-      </button>
-      <span>IBAV MUSIC</span>
-    </div>
-
-    <iframe id="sistema" title="Sistema IBAV Music"></iframe>
-  </section>
-
-  <footer id="rodape">
-    IBAV MUSIC — Igreja Batista Ação e Vida
-  </footer>
-
+  <p style="max-width:1050px;margin:0 auto;padding:0 20px;color:#cbd5e1;font-size:12px;text-align:center">As áreas da Gestão abrem o mesmo sistema. A navegação direta para cada página será ativada quando a Gestão oferecer links internos compatíveis. As permissões são verificadas dentro dos sistemas.</p>
+  <footer>IBAV MUSIC — Igreja Batista Ação e Vida</footer>
   <script>
-    const ENDERECOS = {
-      central: "https://script.google.com/macros/s/AKfycbytpeVA8nUIY2vsMT9oOweG8kFghZUIFbIdvwialilL93cWPmK5HKMv_vzRpyzPW8Lcow/exec",
-
-      sugestao: "https://script.google.com/macros/s/AKfycbzMkzQdeCOhNbLnlM2-DQjdQx-erQ3safYzzCQ0HJJam0Wf5gXOvg2xhG204nTn_ifRDw/exec?pagina=sugerir"
-    };
-
-function abrirSistema(tipo) {
-  window.open(ENDERECOS[tipo], "_blank");
-}
-
-    function voltarInicio() {
-      document.getElementById("sistema").src = "about:blank";
-
-      document.getElementById("telaSistema").style.display = "none";
-      document.getElementById("inicio").style.display = "block";
-      document.getElementById("rodape").style.display = "block";
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(() => console.log('IBAV Music PWA registrado!'))
+          .catch(erro => console.error('Erro ao registrar PWA:', erro));
+      });
     }
   </script>
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js")
-      .then(() => console.log("IBAV Music PWA registrado!"))
-      .catch((erro) => console.error("Erro ao registrar PWA:", erro));
-  });
-}
-</script>
 </body>
 </html>
