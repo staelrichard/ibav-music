@@ -1,5 +1,4 @@
-
-const CACHE_NAME = "ibav-music-v1";
+const CACHE_NAME = "ibav-music-v2";
 
 const ARQUIVOS = [
   "./",
@@ -24,7 +23,7 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((nomes) => {
       return Promise.all(
         nomes
-          .filter((nome) => nome !== CACHE_NAME)
+          .filter((nome) => nome.startsWith("ibav-music-") && nome !== CACHE_NAME)
           .map((nome) => caches.delete(nome))
       );
     })
@@ -55,3 +54,6 @@ self.addEventListener("fetch", (event) => {
     );
   }
 });
+
+self.addEventListener('push',event=>{event.waitUntil((async()=>{let p={};try{p=event.data.json();}catch(e){}const d=p.data||p.notification||{};await self.registration.showNotification(d.title||'IBAV Music',{body:d.body||'Você tem uma nova notificação.',icon:'./logo-ibav-music.png',tag:d.id||undefined,data:{url:new URL('./',self.registration.scope).href}});})());});
+self.addEventListener('notificationclick',event=>{event.notification.close();event.waitUntil((async()=>{const url=new URL('./',self.registration.scope).href;const windows=await self.clients.matchAll({type:'window',includeUncontrolled:true});const w=windows.find(c=>c.url===url);if(w)return w.focus();return self.clients.openWindow(url);})());});
