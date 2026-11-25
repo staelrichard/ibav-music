@@ -76,9 +76,9 @@
       <p class="descricao">Um só lugar para acessar as ferramentas do Ministério de Louvor da nossa igreja.</p>
     </section>
     <section class="opcoes" aria-label="Áreas do IBAV Music">
-      <article class="card"><div class="icone" aria-hidden="true">🎤</div><h2>Sugerir Músicas</h2><p>Envie sugestões de músicas para o ministério.</p><a class="botao" href="https://script.google.com/macros/s/AKfycbzMkzQdeCOhNbLnlM2-DQjdQx-erQ3safYzzCQ0HJJam0Wf5gXOvg2xhG204nTn_ifRDw/exec?pagina=sugerir" target="_blank" rel="noopener noreferrer">Enviar sugestão</a></article>
-      <article class="card"><div class="icone" aria-hidden="true">🎧</div><h2>Central de Avaliação</h2><p>Avalie as músicas sugeridas para o repertório.</p><a class="botao" href="https://script.google.com/macros/s/AKfycbytpeVA8nUIY2vsMT9oOweG8kFghZUIFbIdvwialilL93cWPmK5HKMv_vzRpyzPW8Lcow/exec" target="_blank" rel="noopener noreferrer">Acessar Central</a></article>
-      <article class="card"><div class="icone" aria-hidden="true">👥</div><h2>Membro</h2><p>Um único acesso para escalas, participação, indisponibilidades, trocas, repertório e setlists.</p><a class="botao" href="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec?pagina=inicio" target="_blank" rel="noopener noreferrer">Entrar na Área Membro</a></article>
+      <article class="card"><div class="icone" aria-hidden="true">🎤</div><h2>Sugerir Músicas</h2><p>Envie sugestões de músicas para o ministério.</p><a class="botao" href="https://script.google.com/macros/s/AKfycbzMkzQdeCOhNbLnlM2-DQjdQx-erQ3safYzzCQ0HJJam0Wf5gXOvg2xhG204nTn_ifRDw/exec?pagina=sugerir" target="_self" rel="noopener noreferrer">Enviar sugestão</a></article>
+      <article class="card"><div class="icone" aria-hidden="true">🎧</div><h2>Central de Avaliação</h2><p>Avalie as músicas sugeridas para o repertório.</p><a class="botao" href="https://script.google.com/macros/s/AKfycbytpeVA8nUIY2vsMT9oOweG8kFghZUIFbIdvwialilL93cWPmK5HKMv_vzRpyzPW8Lcow/exec" target="_self" rel="noopener noreferrer">Acessar Central</a></article>
+      <article class="card"><div class="icone" aria-hidden="true">👥</div><h2>Membro</h2><p>Um único acesso para escalas, participação, indisponibilidades, trocas, repertório e setlists.</p><a class="botao" href="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec?pagina=inicio" target="_self" rel="noopener noreferrer">Entrar na Área Membro</a></article>
       <article class="card"><div class="icone" aria-hidden="true">⚙️</div><h2>Administração</h2><p>Gerencie escalas, publicações, lideranças e acessos dos integrantes.</p><button class="botao" type="button" id="ibav-abrir-admin">Entrar na Administração</button></article>
     </section>
   </main>
@@ -89,7 +89,7 @@
       <div id="ibav-google-github"></div><p id="ibav-login-status" role="status"></p>
     </div>
   </section>
-  <form id="ibav-admin-post" action="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec" method="POST" hidden>
+  <form id="ibav-admin-post" target="_self" action="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec" method="POST" hidden>
     <input type="hidden" name="ibav_acao" value="login_google">
     <input type="hidden" name="id_token" id="ibav-admin-credential">
   </form>
