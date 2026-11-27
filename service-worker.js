@@ -1,4 +1,4 @@
-const CACHE_NAME = "ibav-music-v3";
+const CACHE_NAME = "ibav-music-v4";
 
 const ARQUIVOS = [
   "./",
@@ -45,7 +45,7 @@ self.addEventListener("fetch", (event) => {
           const copia = resposta.clone();
 
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, copia);
+            if (copia.ok) return cache.put(event.request, copia);
           });
 
           return resposta;
