@@ -81,6 +81,7 @@
       <article class="card"><div class="icone" aria-hidden="true">👥</div><h2>Membro</h2><p>Um único acesso para escalas, participação, indisponibilidades, trocas, repertório e setlists.</p><a class="botao" href="https://script.google.com/macros/s/AKfycbwzGZa441iTqoaqhcFngLSIh6GiYZJn7ramt2H4qCst1l03n03v66KVU2VTRSTh8L7Lsw/exec?pagina=inicio" target="_self" rel="noopener noreferrer">Entrar na Área Membro</a></article>
       <article class="card"><div class="icone" aria-hidden="true">⚙️</div><h2>Administração</h2><p>Gerencie escalas, publicações, lideranças e acessos dos integrantes.</p><button class="botao" type="button" id="ibav-abrir-admin">Entrar na Administração</button></article>
     </section>
+    <p><a class="botao secundario" href="?push=1">Configurar notificações neste dispositivo</a></p>
   </main>
   <p style="max-width:1050px;margin:0 auto;padding:0 20px;color:#cbd5e1;font-size:12px;text-align:center">A Área Membro utiliza login por PIN. A Administração utiliza autenticação Google e permissões verificadas no servidor.</p>
   <section class="ibav-modal" id="ibav-admin-modal" hidden aria-label="Login administrativo" role="dialog" aria-modal="true">
@@ -133,11 +134,40 @@
       });
     }
   </script>
-<section id="ibavPushSetup" hidden style="max-width:650px;margin:20px auto;padding:20px;background:#151b35;border-radius:16px"><h2>Ativar notificações neste dispositivo</h2><p>Autorize as notificações, copie o código do dispositivo e volte à central de notificações da sua conta. Não compartilhe o código.</p><button class="botao" id="ibavPushEnable">Autorizar e gerar código</button><p id="ibavPushStatus" role="status"></p><textarea id="ibavPushCode" readonly hidden style="width:100%;min-height:100px" aria-label="Código do dispositivo"></textarea><button class="botao secundario" id="ibavPushCopy" hidden>Copiar código</button></section>
+<section id="ibavPushSetup" hidden style="max-width:650px;margin:20px auto;padding:20px;background:#151b35;border-radius:16px"><h2>Ativar notificações neste dispositivo</h2><p>Autorize as notificações, copie o código do dispositivo e volte à central de notificações da sua conta. Não compartilhe o código.</p><button class="botao" id="ibavPushEnable">Autorizar e gerar código</button><p id="ibavPushHelp"></p><button class="botao secundario" id="ibavPushRenew" style="margin-top:10px">Gerar novo código (se o anterior falhar)</button><p id="ibavPushStatus" role="status"></p><textarea id="ibavPushCode" readonly hidden style="width:100%;min-height:100px" aria-label="Código do dispositivo"></textarea><button class="botao secundario" id="ibavPushCopy" hidden>Copiar código</button></section>
 <script type="module">
 if(new URLSearchParams(location.search).get('push')==='1'){
-const root=document.getElementById('ibavPushSetup'),status=document.getElementById('ibavPushStatus'),code=document.getElementById('ibavPushCode'),copy=document.getElementById('ibavPushCopy');root.hidden=false;document.getElementById('inicio').hidden=true;
-document.getElementById('ibavPushEnable').onclick=async()=>{try{if(!('Notification' in window)||!('serviceWorker' in navigator))throw Error('Dispositivo incompatível. No iPhone, abra o PWA instalado na tela inicial.');if(await Notification.requestPermission()!=='granted')throw Error('Permissão não concedida.');status.textContent='Registrando dispositivo…';const [{initializeApp},{getMessaging,getToken,isSupported}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.4.0/firebase-messaging.js')]);if(!await isSupported())throw Error('Navegador incompatível com Firebase Messaging.');await navigator.serviceWorker.register('./service-worker.js');const reg=await navigator.serviceWorker.ready;const token=await getToken(getMessaging(initializeApp({apiKey:"AIzaSyCVHAYR4D0aGgTtMdC5ZexDZmviA6tcV3I",authDomain:"ibav-music.firebaseapp.com",projectId:"ibav-music",storageBucket:"ibav-music.firebasestorage.app",messagingSenderId:"536782989797",appId:"1:536782989797:web:c8bed6184a0d6ca704e70c"})),{vapidKey:'BGOjfMQve-7C-YFlbuwUluGkGM39xPpyqrG3KCOmILP2g9YCLnVH9gwW5t0l8bdhCdvOajvsm6ZT4ylvcCuvFwU',serviceWorkerRegistration:reg});if(!token)throw Error('Firebase não retornou código.');code.value=token;code.hidden=false;copy.hidden=false;status.textContent='Copie o código e cole na central da sua conta.';}catch(e){status.textContent=e.message;}};copy.onclick=async()=>{try{await navigator.clipboard.writeText(code.value);status.textContent='Código copiado.';}catch(e){code.select();status.textContent='Copie o código selecionado manualmente.';}};
+const root=document.getElementById('ibavPushSetup'),status=document.getElementById('ibavPushStatus'),code=document.getElementById('ibavPushCode'),copy=document.getElementById('ibavPushCopy'),enable=document.getElementById('ibavPushEnable'),renew=document.getElementById('ibavPushRenew'),help=document.getElementById('ibavPushHelp');
+root.hidden=false;document.getElementById('inicio').hidden=true;
+const ios=/iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+help.textContent=ios?'No iPhone, abra o IBAV Music pelo ícone da tela inicial e entre em Configurar notificações no próprio portal. Se necessário, confira Ajustes > Notificações.':'Confira as permissões de notificações do navegador, do site e do aplicativo nas configurações do celular.';
+if(ios&&!standalone){enable.disabled=true;renew.disabled=true;status.textContent='Abra o portal pelo ícone instalado na tela inicial e escolha Configurar notificações. Não use a janela externa da Área Membro.';}
+let messaging;
+async function gerar(reset){
+ if(reset&&!confirm('Renovar o código invalida o token anterior deste navegador. Se já estiver vinculado, será necessário confirmar o novo código. Continuar?'))return;
+ enable.disabled=renew.disabled=true;code.value='';code.hidden=copy.hidden=true;
+ try{
+ if(!window.isSecureContext||!('Notification' in window)||!('serviceWorker' in navigator)||!('PushManager' in window))throw Error('Ambiente incompatível com Web Push. Abra o portal instalado ou um navegador compatível.');
+ if(Notification.permission==='denied')throw Error('Notificações bloqueadas. Libere nas configurações do site e do celular.');
+ const permission=Notification.permission==='granted'?'granted':await Notification.requestPermission();
+ if(permission!=='granted')throw Error('Permissão não concedida. Autorize as notificações e tente novamente.');
+ status.textContent='Registrando dispositivo…';
+ const [{initializeApp,getApps},{getMessaging,getToken,deleteToken,isSupported}]=await Promise.all([import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js'),import('https://www.gstatic.com/firebasejs/13.4.0/firebase-messaging.js')]);
+ if(!await isSupported())throw Error('Firebase Messaging não é compatível com este ambiente.');
+ await navigator.serviceWorker.register('./service-worker.js');
+ const reg=await navigator.serviceWorker.ready;
+ if(reg.scope!==new URL('./',location.href).href)throw Error('Escopo do serviço de notificações incorreto.');
+ messaging=messaging||getMessaging(getApps()[0]||initializeApp({apiKey:"AIzaSyCVHAYR4D0aGgTtMdC5ZexDZmviA6tcV3I",authDomain:"ibav-music.firebaseapp.com",projectId:"ibav-music",storageBucket:"ibav-music.firebasestorage.app",messagingSenderId:"536782989797",appId:"1:536782989797:web:c8bed6184a0d6ca704e70c"}));
+ const options={vapidKey:'BGOjfMQve-7C-YFlbuwUluGkGM39xPpyqrG3KCOmILP2g9YCLnVH9gwW5t0l8bdhCdvOajvsm6ZT4ylvcCuvFwU',serviceWorkerRegistration:reg};
+ let token=await getToken(messaging,options);
+ if(reset){status.textContent='Renovando registro…';await deleteToken(messaging);token=await getToken(messaging,options);}
+ if(!token)throw Error('Firebase não retornou código.');
+ code.value=token;code.hidden=copy.hidden=false;status.textContent='Copie o código e cole na central de notificações da sua conta.';
+ }catch(e){status.textContent=(e.code?e.code+' — ':'')+String(e.message||'Falha ao configurar notificações.');}finally{enable.disabled=renew.disabled=false;}
+}
+enable.onclick=()=>gerar(false);renew.onclick=()=>gerar(true);
+copy.onclick=async()=>{try{await navigator.clipboard.writeText(code.value);status.textContent='Código copiado.';}catch(e){code.select();status.textContent='Copie o código selecionado manualmente.';}};
 }
 </script>
 </body>
